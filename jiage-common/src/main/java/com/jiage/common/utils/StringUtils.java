@@ -22,120 +22,122 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     private static final char SEPARATOR = '_';
 
     /**
-     * 获取参数不为空值
+     * 返回不为空的值
+     * 如果value不为空，则返回value，value为空，则返回defaultValue
      *
-     * @param value defaultValue 要判断的value
-     * @return value 返回值
+     * @param value        要判断的value
+     * @param defaultValue value为空时返回的值
+     * @return 返回值
      */
     public static <T> T nvl(T value, T defaultValue) {
         return value != null ? value : defaultValue;
     }
 
     /**
-     * * 判断一个Collection是否为空， 包含List，Set，Queue
+     * 判断一个Collection是否为空
      *
      * @param coll 要判断的Collection
-     * @return true：为空 false：非空
+     * @return true：为空，false：非空
      */
     public static boolean isEmpty(Collection<?> coll) {
         return isNull(coll) || coll.isEmpty();
     }
 
     /**
-     * * 判断一个Collection是否非空，包含List，Set，Queue
+     * 判断一个Collection是否非空
      *
      * @param coll 要判断的Collection
-     * @return true：非空 false：空
+     * @return true：非空，false：空
      */
     public static boolean isNotEmpty(Collection<?> coll) {
         return !isEmpty(coll);
     }
 
     /**
-     * * 判断一个对象数组是否为空
+     * 判断一个对象数组是否为空
      *
      * @param objects 要判断的对象数组
-     *                * @return true：为空 false：非空
+     * @return true：为空，false：非空
      */
     public static boolean isEmpty(Object[] objects) {
         return isNull(objects) || (objects.length == 0);
     }
 
     /**
-     * * 判断一个对象数组是否非空
+     * 判断一个对象数组是否非空
      *
      * @param objects 要判断的对象数组
-     * @return true：非空 false：空
+     * @return true：非空，false：空
      */
     public static boolean isNotEmpty(Object[] objects) {
         return !isEmpty(objects);
     }
 
     /**
-     * * 判断一个Map是否为空
+     * 判断一个Map是否为空
      *
      * @param map 要判断的Map
-     * @return true：为空 false：非空
+     * @return true：为空，false：非空
      */
     public static boolean isEmpty(Map<?, ?> map) {
         return isNull(map) || map.isEmpty();
     }
 
     /**
-     * * 判断一个Map是否为空
+     * 判断一个Map是否为空
      *
      * @param map 要判断的Map
-     * @return true：非空 false：空
+     * @return true：非空，false：空
      */
     public static boolean isNotEmpty(Map<?, ?> map) {
         return !isEmpty(map);
     }
 
     /**
-     * * 判断一个字符串是否为空串
+     * 判断一个字符串是否为空串
      *
      * @param str String
-     * @return true：为空 false：非空
+     * @return true：为空，false：非空
      */
     public static boolean isEmpty(String str) {
         return isNull(str) || NULLSTR.equals(str.trim());
     }
 
     /**
-     * * 判断一个字符串是否为非空串
+     * 判断一个字符串是否为非空串
      *
      * @param str String
-     * @return true：非空串 false：空串
+     * @return true：非空串，false：空串
      */
     public static boolean isNotEmpty(String str) {
         return !isEmpty(str);
     }
 
     /**
-     * * 判断一个对象是否为空
+     * 判断一个对象是否为空
      *
      * @param object Object
-     * @return true：为空 false：非空
+     * @return true：为空，false：非空
      */
     public static boolean isNull(Object object) {
         return object == null;
     }
 
     /**
-     * * 判断一个对象是否非空
+     * 判断一个对象是否非空
      *
      * @param object Object
-     * @return true：非空 false：空
+     * @return true：非空，false：空
      */
     public static boolean isNotNull(Object object) {
         return !isNull(object);
     }
 
     /**
-     * * 判断一个对象是否是数组类型（Java基本型别的数组）
+     * 判断一个对象是否是数组类型
      *
      * @param object 对象
-     * @return true：是数组 false：不是数组
+     * @return true：是数组，false：不是数组
      */
     public static boolean isArray(Object object) {
         return isNotNull(object) && object.getClass().isArray();
@@ -145,7 +147,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * 去空格
      */
     public static String trim(String str) {
-        return (str == null ? "" : str.trim());
+        return (str == null ? NULLSTR : str.trim());
     }
 
     /**
@@ -159,14 +161,15 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (str == null) {
             return NULLSTR;
         }
-
+        // start为负，代表从后向前计数，-1为最后一位
         if (start < 0) {
             start = str.length() + start;
         }
-
+        // start过小
         if (start < 0) {
             start = 0;
         }
+
         if (start > str.length()) {
             return NULLSTR;
         }
@@ -176,6 +179,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 截取字符串
+     * start与end最好正负相同
      *
      * @param str   字符串
      * @param start 开始
@@ -186,7 +190,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (str == null) {
             return NULLSTR;
         }
-
+        // start与end为负，代表从后向前计数，-1为倒数第二位
         if (end < 0) {
             end = str.length() + end;
         }
@@ -213,10 +217,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 格式化文本, {} 表示占位符<br>
-     * 此方法只是简单将占位符 {} 按照顺序替换为参数<br>
-     * 如果想输出 {} 使用 \\转义 { 即可，如果想输出 {} 之前的 \ 使用双转义符 \\\\ 即可<br>
-     * 例：<br>
+     * 格式化文本, {} 表示占位符
+     * 此方法只是简单将占位符 {} 按照顺序替换为参数
+     * 如果想输出 {} 使用 \\转义 { 即可，如果想输出 {} 之前的 \ 使用双转义符 \\\\ 即可
+     * 例：
      * 通常使用：format("this is {} for {}", "a", "b") -> this is a for b<br>
      * 转义{}： format("this is \\{} for {}", "a", "b") -> this is \{} for a<br>
      * 转义\： format("this is \\\\{} for {}", "a", "b") -> this is \a for b<br>
@@ -233,27 +237,27 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 字符串转set
+     * 字符串转Set
      *
      * @param str 字符串
      * @param sep 分隔符
-     * @return set集合
+     * @return Set集合
      */
     public static final Set<String> str2Set(String str, String sep) {
-        return new HashSet<String>(str2List(str, sep, true, false));
+        return new HashSet<>(str2List(str, sep, true, false));
     }
 
     /**
-     * 字符串转list
+     * 字符串转List
      *
      * @param str         字符串
      * @param sep         分隔符
      * @param filterBlank 过滤纯空白
      * @param trim        去掉首尾空白
-     * @return list集合
+     * @return List集合
      */
     public static final List<String> str2List(String str, String sep, boolean filterBlank, boolean trim) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         if (StringUtils.isEmpty(str)) {
             return list;
         }
@@ -277,52 +281,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 下划线转驼峰命名
-     */
-    public static String toUnderScoreCase(String str) {
-        if (str == null) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        // 前置字符是否大写
-        boolean preCharIsUpperCase = true;
-        // 当前字符是否大写
-        boolean curreCharIsUpperCase = true;
-        // 下一字符是否大写
-        boolean nexteCharIsUpperCase = true;
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (i > 0) {
-                preCharIsUpperCase = Character.isUpperCase(str.charAt(i - 1));
-            } else {
-                preCharIsUpperCase = false;
-            }
-
-            curreCharIsUpperCase = Character.isUpperCase(c);
-
-            if (i < (str.length() - 1)) {
-                nexteCharIsUpperCase = Character.isUpperCase(str.charAt(i + 1));
-            }
-
-            if (preCharIsUpperCase && curreCharIsUpperCase && !nexteCharIsUpperCase) {
-                sb.append(SEPARATOR);
-            } else if ((i != 0 && !preCharIsUpperCase) && curreCharIsUpperCase) {
-                sb.append(SEPARATOR);
-            }
-            sb.append(Character.toLowerCase(c));
-        }
-
-        return sb.toString();
-    }
-
-    /**
      * 是否包含字符串
      *
      * @param str  验证字符串
      * @param strs 字符串组
      * @return 包含返回true
      */
-    public static boolean inStringIgnoreCase(String str, String... strs) {
+    public static boolean isContain(String str, String... strs) {
         if (str != null && strs != null) {
             for (String s : strs) {
                 if (str.equalsIgnoreCase(trim(s))) {
@@ -334,10 +299,47 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 将下划线大写方式命名的字符串转换为驼峰式。如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。 例如：HELLO_WORLD->HelloWorld
-     *
-     * @param name 转换前的下划线大写方式命名的字符串
-     * @return 转换后的驼峰式命名的字符串
+     * 驼峰转下划线命名
+     */
+    public static String toUnderScoreCase(String str) {
+        if (str == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        // 前置字符是否大写
+        boolean preChar = true;
+        // 当前字符是否大写
+        boolean currChar = true;
+        // 下一字符是否大写
+        boolean nextChar = true;
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (i > 0) {
+                preChar = Character.isUpperCase(str.charAt(i - 1));
+            } else {
+                preChar = false;
+            }
+
+            currChar = Character.isUpperCase(c);
+
+            if (i < (str.length() - 1)) {
+                nextChar = Character.isUpperCase(str.charAt(i + 1));
+            }
+
+            if (preChar && currChar && !nextChar) {
+                sb.append(SEPARATOR);
+            } else if ((i != 0 && !preChar) && currChar) {
+                sb.append(SEPARATOR);
+            }
+            sb.append(Character.toLowerCase(c));
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * 将下划线大写方式命名的字符串转换为驼峰式。如果转换前的下划线大写方式命名的字符串为空，则返回空字符串
+     * HELLO_WORLD->HelloWorld
      */
     public static String convertToCamelCase(String name) {
         StringBuilder result = new StringBuilder();
@@ -364,7 +366,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 驼峰式命名法 例如：user_name->userName
+     * 驼峰式命名法
+     * user_name->userName
      */
     public static String toCamelCase(String s) {
         if (s == null) {
@@ -388,8 +391,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return sb.toString();
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T cast(Object obj) {
-        return (T) obj;
-    }
+//    @SuppressWarnings("unchecked")
+//    public static <T> T cast(Object obj) {
+//        return (T) obj;
+//    }
 }

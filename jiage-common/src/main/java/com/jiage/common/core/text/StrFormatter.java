@@ -3,25 +3,42 @@ package com.jiage.common.core.text;
 import com.jiage.common.utils.StringUtils;
 
 /**
+ * 字符串格式化
+ *
  * @author jiage
  * @date 2020/09/10
  */
 public class StrFormatter {
+    /**
+     * 占位符
+     */
     public static final String EMPTY_JSON = "{}";
+
+    /**
+     * 反斜杠
+     */
     public static final char C_BACKSLASH = '\\';
+
+    /**
+     * 开始分隔符
+     */
     public static final char C_DELIM_START = '{';
+
+    /**
+     * 结束分割符
+     */
     public static final char C_DELIM_END = '}';
 
     /**
-     * 格式化字符串<br>
-     * 此方法只是简单将占位符 {} 按照顺序替换为参数<br>
-     * 如果想输出 {} 使用 \\转义 { 即可，如果想输出 {} 之前的 \ 使用双转义符 \\\\ 即可<br>
-     * 例：<br>
+     * 格式化字符串
+     * 此方法只是简单将占位符 {} 按照顺序替换为参数
+     * 如果想输出 {} 使用 \\转义 { 即可，如果想输出 {} 之前的 \ 使用双转义符 \\\\ 即可
+     * 例：
      * 通常使用：format("this is {} for {}", "a", "b") -> this is a for b<br>
      * 转义{}： format("this is \\{} for {}", "a", "b") -> this is \{} for a<br>
      * 转义\： format("this is \\\\{} for {}", "a", "b") -> this is \a for b<br>
      *
-     * @param strPattern 字符串模板
+     * @param strPattern 字符串模板，被替换的部分用 {} 表示
      * @param argArray   参数列表
      * @return 结果
      */
@@ -35,13 +52,15 @@ public class StrFormatter {
         StringBuilder sbuf = new StringBuilder(strPatternLength + 50);
 
         int handledPosition = 0;
-        int delimIndex;// 占位符所在位置
+        // 占位符所在位置
+        int delimIndex;
         for (int argIndex = 0; argIndex < argArray.length; argIndex++) {
             delimIndex = strPattern.indexOf(EMPTY_JSON, handledPosition);
             if (delimIndex == -1) {
                 if (handledPosition == 0) {
                     return strPattern;
-                } else { // 字符串模板剩余部分不再包含占位符，加入剩余部分后返回结果
+                } else {
+                    // 字符串模板剩余部分不再包含占位符，加入剩余部分后返回结果
                     sbuf.append(strPattern, handledPosition, strPatternLength);
                     return sbuf.toString();
                 }

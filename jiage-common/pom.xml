@@ -61,7 +61,6 @@
             <artifactId>snakeyaml</artifactId>
         </dependency>
 
-
     </dependencies>
 
 </project>

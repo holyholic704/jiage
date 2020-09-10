@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 字符集工具类
+ *
  * @author jiage
  * @date 2020/09/10
  */
@@ -82,7 +84,7 @@ public class CharsetKit {
     }
 
     /**
-     * @return 系统字符集编码
+     * 获取系统字符集编码
      */
     public static String systemCharset() {
         return Charset.defaultCharset().name();
